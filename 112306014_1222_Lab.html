@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>112306014_1222_Lab</title>
+    <style>
+        /* Center the content */
+        body {
+            text-align: center;
+        }
+
+        /* Add some styles for the dice elements and table */
+        .die {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;  /* Center the table */
+            font-family: 'Arial', sans-serif;
+            width: 300px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #E972FA;
+        }
+
+        td {
+            background-color: #F5ADFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dice Roll Probability</h1>
+    <button onclick="rollDice()">Roll Dice</button>
+    <div id="result"></div>
+
+    <!-- Add dice elements with unique IDs and image sources -->
+    <div class="die" id="die1"></div>
+    <div class="die" id="die2"></div>
+    <div class="die" id="die3"></div>
+    <div class="die" id="die4"></div>
+    <div class="die" id="die5"></div>
+    <div class="die" id="die6"></div>
+    <div class="die" id="die7"></div>
+    <div class="die" id="die8"></div>
+    <div class="die" id="die9"></div>
+    <div class="die" id="die10"></div>
+    <div class="die" id="die11"></div>
+    <div class="die" id="die12"></div>
+
+    <!-- Table to display probabilities -->
+    <table id="resultTable" style="display:none;">
+        <tr>
+            <th>Face</th>
+            <th>Probability</th>
+        </tr>
+        <!-- Rows for each face will be added dynamically by JavaScript -->
+    </table>
+
+    <script>
+        // Function to get element by ID
+        function getById(id) {
+            return document.getElementById(id);
+        }
+
+        // Function to roll the dice and show the probability
+        function rollDice() {
+            const numDice = 12;
+            const results = Array.from({ length: numDice }, () => Math.floor(Math.random() * 6) + 1);
+
+            // Count occurrences of each face
+            const faceCounts = Array(6).fill(0);
+            results.forEach(result => faceCounts[result - 1]++);
+
+            // Calculate probability for each face
+            const probabilities = faceCounts.map(count => (count / numDice * 100).toFixed(2) + "%");
+
+            // Display results and update dice elements
+            const resultElement = getById("result");
+            resultElement.innerHTML = "Results: " + results.join(", ") + "<br>";
+
+            // Update dice elements with images
+            for (let i = 0; i < numDice; i++) {
+                const dieElement = getById("die" + (i + 1));
+                setImage(dieElement, results[i]);
+            }
+
+            // Update the table with probabilities and display it
+            const table = getById("resultTable");
+            table.innerHTML = "<tr><th>Face</th><th>Probability</th></tr>";
+
+            for (let i = 0; i < probabilities.length; i++) {
+                table.innerHTML += `<tr><td>${i + 1}</td><td>${probabilities[i]}</td></tr>`;
+            }
+
+            table.style.display = "table";
+        }
+
+        // Function to set the image of the die
+        function setImage(element, value) {
+            element.innerHTML = `<img src="dice${value}.png" alt="Dice ${value}">`;
+        }
+    </script>
+</body>
+</html>
